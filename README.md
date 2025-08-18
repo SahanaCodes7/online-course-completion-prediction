@@ -43,52 +43,25 @@ git clone https://github.com/<your-username>/Online-Course-Completion-ML.git
 cd Online-Course-Completion-ML
 
 2️⃣ Install dependencies
-
 Using Poetry:
-
 poetry install
-
 Or using pip:
-
 pip install -r requirements.txt
-
-
 ---
-
 ▶ Running the Project
-
 Run Jupyter Notebook
-
 jupyter notebook
-
 Run FastAPI App
-
 uvicorn app.main:app --reload
-
 Then open: http://127.0.0.1:8000/docs
-
-
 ---
-
 📊 Models Used
-
 Logistic Regression
-
 Random Forest Classifier
-
 Gradient Boosting Classifier
-
-
-
 ---
-
 📈 Results
-
 Random Forest achieved the highest accuracy (~95-96%) in experiments.
-
-
 ---
-
 🧑‍💻 Author
-
 Sahana L
