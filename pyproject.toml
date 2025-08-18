@@ -1,3 +1,4 @@
+[tool.poetry]
 name = "online-course-completion-ml"
 version = "0.1.0"
 description = "Machine learning project to predict online course completion."
