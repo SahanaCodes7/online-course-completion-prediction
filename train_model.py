@@ -103,4 +103,3 @@ if __name__ == "__main__":
     trainer = TrainModel(args.data)
     trainer.train_all()
     trainer.save_best_model()
-
