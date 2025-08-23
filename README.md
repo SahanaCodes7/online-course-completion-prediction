@@ -1,6 +1,6 @@
 # 🎓 Online Course Completion Prediction
 
-## 📌 Project Overview
+## 📌 Project Overview 
 This project predicts whether a student will complete an online course based on their activity and performance data.  
 We apply *Machine Learning algorithms* such as Logistic Regression, Random Forest, and Gradient Boosting to build predictive models.
 
