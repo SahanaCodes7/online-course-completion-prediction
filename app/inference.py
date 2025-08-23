@@ -80,4 +80,3 @@ if __name__ == "__main__":
     }])
 
     print(inference.predict(sample_data))
-
