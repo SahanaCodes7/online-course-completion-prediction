@@ -78,7 +78,7 @@ class TrainModel:
                 self.best_model_name = name
                 self.best_model = model
 
-        print(f"\n✅ Best Model: {self.best_model_name} with Accuracy: {best_accuracy:.4f}")
+        print(f"\nBest Model: {self.best_model_name} with Accuracy: {best_accuracy:.4f}")
 
     def save_best_model(self):
         models_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
@@ -92,8 +92,8 @@ class TrainModel:
         joblib.dump(self.scaler, os.path.join(models_dir, "scaler.pkl"))
         joblib.dump(self.feature_names, os.path.join(models_dir, "features.pkl"))
 
-        print(f"💾 Saved best model to: {model_path}")
-        print(f"💾 Saved scaler and features for inference.")
+        print(f"Saved best model to: {model_path}")
+        print(f"Saved scaler and features for inference.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Train and save the best ML model.")
