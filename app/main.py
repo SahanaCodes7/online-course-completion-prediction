@@ -189,3 +189,4 @@ def predict_course_completion(data: CourseData):
 
     return {"completed_course": int(prediction[0])}
 
+
