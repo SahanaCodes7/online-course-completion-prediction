@@ -165,9 +165,6 @@ async def home():
     </html>
     """
     return HTMLResponse(content=html_content)
-
-
-
 # ✅ Match schema to training features
 class CourseData(BaseModel):
     age: int
@@ -186,16 +183,9 @@ class CourseData(BaseModel):
 def predict_course_completion(data: CourseData):
     # Convert Pydantic model → DataFrame
     df = pd.DataFrame([data.dict()])
-<<<<<<< HEAD
-=======
 
     # Run prediction
     prediction = inference.predict(df)
 
     return {"completed_course": int(prediction[0])}
->>>>>>> b4ceb79 (Fix notebook structure and update code + docs)
 
-    # Run prediction
-    prediction = inference.predict(df)
-
-    return {"completed_course": int(prediction[0])}
