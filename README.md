@@ -61,7 +61,7 @@ Random Forest Classifier
 Gradient Boosting Classifier
 ---
 📈 Results
-Random Forest achieved the highest accuracy (~95-96%) in experiments.
+Gradient Boosting Classifier achieved the highest accuracy 96% in experiments.
 ---
 🧑‍💻 Author
 Sahana L
