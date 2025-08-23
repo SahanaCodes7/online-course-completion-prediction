@@ -57,7 +57,7 @@ class InferenceModel:
 if __name__ == "__main__":
     # Example usage
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(BASE_DIR, "models", "best_model.pkl")
+    model_path = os.path.join(BASE_DIR, "models", "gradient_boosting.pkl")
     scaler_path = os.path.join(BASE_DIR, "models", "scaler.pkl")
     features_path = os.path.join(BASE_DIR, "models", "features.pkl")
 
