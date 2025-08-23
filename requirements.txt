@@ -5,7 +5,4 @@ joblib
 fastapi
 uvicorn
 jupyter
-<<<<<<< HEAD
 
-=======
->>>>>>> b4ceb79 (Fix notebook structure and update code + docs)
