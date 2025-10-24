@@ -36,7 +36,7 @@ Online-Course-Completion-ML/ │── app/ │   ├── main.py          # F
 1. *Clone the repo*
    ```bash
    git clone https://github.com/SahanaCodes27/online-course-completion-prediction.git
-   cd online-course-completion-prediction
+   cd Online-Course-Completion-ML
 
 2. Create and activate virtual environment
 
