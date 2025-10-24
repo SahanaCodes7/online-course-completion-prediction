@@ -40,7 +40,7 @@ Online-Course-Completion-ML/ │── app/ │   ├── main.py          # F
 
 2. Create and activate virtual environment
 
-``bash
+```bash
 python3 -m venv venv
 
 source venv/bin/activate        # For Linux/Mac
