@@ -4,10 +4,10 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # copy only requirements first for layer caching
-RUN pip install --upgrade pip
-RUN pip install cython==0.29.36
-RUN apt-get update && apt-get install -y build-essential
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y python3-pip build-essential
+RUN pip3 install --upgrade pip
+RUN pip3 install cython==0.29.36
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # copy project
 COPY . .
