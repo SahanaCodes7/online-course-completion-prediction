@@ -1,149 +1,169 @@
-
 # Online Course Completion Prediction
 
-This project predicts whether a student will complete an online course using Machine Learning.  
-It uses real student engagement data (e.g., logins, videos watched, assignments submitted) and applies multiple ML models to select the best performing one.  
+This project predicts whether a student will complete an online course using **Machine Learning**.  
+It leverages student engagement data (logins, videos watched, assignments submitted, etc.) and trains multiple ML models to select the best-performing one.
 
-The API is built with **FastAPI**, making it easy to serve predictions in real-time.
-
----
-
-## Features
-- Preprocessing with **feature engineering** (BMI, engagement score).  
-- Trains **Logistic Regression**, **Random Forest**, and **Gradient Boosting**.  
-- Automatically selects and saves the **best model**.  
-- **FastAPI backend** with `/predict` endpoint.  
-- **Comprehensive unit tests** with pytest (92% code coverage).  
-- **AWS S3 integration** for model storage in production.  
-- Easy integration with real applications.  
+The system also includes a **FastAPI backend** for real-time predictions and supports **model retraining**, making it suitable for production and MLOps workflows.
 
 ---
 
-## Tech Stack
-- Python 3.10+  
-- Pandas, NumPy  
-- Scikit-learn  
-- FastAPI  
-- Uvicorn  
-- Joblib  
-- Boto3 (AWS SDK)  
-- Pytest (Testing)  
+##  Features
+- Data preprocessing with **feature engineering** (BMI, engagement score)
+- Trains multiple models:
+  - Logistic Regression
+  - Random Forest
+  - Gradient Boosting
+- Automatically selects and saves the **best model**
+- **Model retraining script** to handle new incoming data
+- **FastAPI backend** with `/predict` endpoint
+- **Comprehensive unit tests** using pytest (~92% coverage)
+- **AWS S3 integration** for model storage (production)
+- Dockerized and deployable on **AWS ECS (Fargate)**
 
 ---
 
-## Project Structure
-```
-Online-Course-Completion-ML/
+##  Tech Stack
+- Python 3.10+
+- Pandas, NumPy
+- Scikit-learn
+- FastAPI
+- Uvicorn
+- Joblib
+- Boto3 (AWS SDK)
+- Pytest
+- Docker
+- AWS (S3, ECR, ECS – Fargate)
+
+---
+
+##  Project Structure
+
+online-course-completion-prediction/
 │── app/
-│   ├── main.py          # FastAPI app (backend)
-│   ├── inference.py     # Loads trained model & makes predictions
-│   └── train_model.py   # Training script
-│── models/              # Stores trained models & scalers (local development)
-│── tests/               # Unit tests with pytest
-│   ├── test_inference.py
-│   ├── test_main.py
-│   └── conftest.py
-│── d.csv                # Dataset (not uploaded to GitHub)
-│── requirements.txt     # Python dependencies
-│── Dockerfile           # Docker container configuration
-│── pyproject.toml       # Poetry configuration
-└── README.md            # Documentation
-```
+│ ├── main.py # FastAPI application
+│ ├── inference.py # Loads trained model & runs predictions
+│ └── train_model.py # Training script (model selection)
+│
+│── models/ # Trained models (local dev only)
+│── tests/ # Pytest unit tests
+│── notebooks/ # Experiments & exploration
+│── data/ # Dataset directory (not committed)
+│
+│── retraining.py # Model retraining script
+│── Dockerfile
+│── docker-compose.yml
+│── requirements.txt
+│── pyproject.toml
+│── README.md
+
 
 ---
 
-## Setup Instructions
+##  Dataset
+- The dataset is **NOT included** in the repository.
+- Place the dataset locally at:
 
-1. **Clone the repo**
-   ```
-   git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
-   cd online-course-completion-prediction
-   ```
+data/online_course_completion.csv
 
-2. **Create and activate virtual environment**
-   ```
-   python3 -m venv venv
-   source venv/bin/activate        # For Linux/Mac
-   venv\Scripts\activate           # For Windows
-   ```
 
-3. **Install dependencies**
-   ```
-   pip install -r requirements.txt
-   ```
+This design avoids pushing large or sensitive data to GitHub and follows industry best practices.
 
 ---
 
-## Training the Model
+##  Setup Instructions
 
-Run the training script with your dataset:
+### 1. Clone the repository
+```bash
+git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
+cd online-course-completion-prediction
 
-```
-python app/train_model.py --data d.csv
-```
+2. Create & activate virtual environment
+python -m venv venv
 
-This will:
-- Preprocess the dataset
-- Train Logistic Regression, Random Forest, and Gradient Boosting
-- Select the best model based on accuracy
-- Save the model, scaler, and feature names in the `models/` folder
+Windows
+venv\Scripts\activate
 
----
+Linux / Mac
+source venv/bin/activate
 
-## Testing
+3. Install dependencies
+pip install -r requirements.txt
 
-### Run Unit Tests
+Model Training
 
-The project includes comprehensive unit tests with **pytest**:
+Train models and automatically select the best one:
 
-```
-# Run all tests
+python app/train_model.py --data data/online_course_completion.csv
+
+
+This script:
+
+Preprocesses the data
+
+Trains Logistic Regression, Random Forest & Gradient Boosting
+
+Selects the best model based on accuracy
+
+Saves the model, scaler, and feature metadata in models/
+
+Model Retraining (New Data Support)
+
+A retraining pipeline is included to simulate retraining on new incoming data.
+
+python retraining.py
+
+
+What it does:
+
+Loads the existing dataset (simulating new data)
+
+Handles categorical features using one-hot encoding
+
+Retrains the model
+
+Evaluates accuracy
+
+Saves the updated model in models/
+
+🔹 This script is designed so real updated datasets can be plugged in later without changing the pipeline.
+
+Testing
+
+Run all tests:
+
 pytest tests/ -v
 
-# Run with coverage report
+
+Run with coverage:
+
 pytest tests/ -v --cov=app --cov-report=html
 
-# Run specific test file
-pytest tests/test_inference.py -v
 
-# Run specific test
-pytest tests/test_main.py::TestFastAPIEndpoints::test_home_endpoint -v
-```
+~24 unit tests
 
-### Test Coverage
+~92% coverage
 
-- **24 comprehensive unit tests**
-- **92% code coverage**
-- Tests cover:
-  - Model inference logic
-  - Data preprocessing
-  - API endpoints
-  - Error handling
-  - S3 integration
+Covers:
 
-View detailed coverage report by opening `htmlcov/index.html` after running coverage tests.
+API endpoints
 
----
+Inference logic
 
-## Running the API Locally
+Error handling
 
-Start the FastAPI server with Uvicorn:
+S3 integration (mocked)
 
-```
+Running the API Locally
 uvicorn app.main:app --reload
-```
 
-Now open in browser:
-- Swagger UI → http://127.0.0.1:8000/docs
-- ReDoc → http://127.0.0.1:8000/redoc
 
----
+Access:
 
-## Example Request
+Swagger UI → http://127.0.0.1:8000/docs
 
-Go to Swagger UI and try `/predict` with the following JSON:
+ReDoc → http://127.0.0.1:8000/redoc
 
-```
+Example Prediction Request
 {
   "age": 25,
   "continent": "Asia",
@@ -156,270 +176,46 @@ Go to Swagger UI and try `/predict` with the following JSON:
   "is_working_professional": 1
 }
 
-```
 
 Response:
-```
+
 {
   "completed_course": 1,
   "model": "gradient_boosting.pkl"
 }
-```
 
-(1 → Student is likely to complete the course, 0 → Not likely)
+Model Storage – AWS S3
 
----
+In production:
 
-## Model Storage - AWS S3 Integration
+Models are stored in AWS S3
 
-In production, models are stored in **AWS S3** instead of being bundled in the Docker image. This provides:
-- **Smaller Docker images** (faster deployments)
-- **Easy model updates** without rebuilding containers
-- **Version control** for ML models
-- **Cost-effective storage**
+Containers download models on startup
 
-### S3 Configuration
+Keeps Docker images small and flexible
 
-- **Bucket**: `online-course-models`
-- **Region**: `ap-south-1` (Mumbai)
-- **Storage**: ~68 MB (5 model files)
-- **Files**:
-  - `gradient_boosting.pkl` (140 KB)
-  - `random_forest.pkl` (68 MB)
-  - `scaler.pkl` (2 KB)
-  - `features.pkl` (563 bytes)
-  - `prep.pkl` (262 bytes)
+Environment variables:
 
-### Environment Variables
+USE_S3=true
+S3_BUCKET=online-course-models
+S3_PREFIX=models
 
-The application uses environment variables to configure S3 integration:
+Deployment (AWS ECS – Fargate)
 
-```
-USE_S3=true                          # Enable S3 model loading
-S3_BUCKET=online-course-models       # S3 bucket name
-S3_PREFIX=models                     # Folder path in S3
-```
+Dockerized FastAPI app
 
-**Local Development** (USE_S3=false):
-- Models are loaded from local `models/` folder
+Image pushed to Amazon ECR
 
-**Production Deployment** (USE_S3=true):
-- Models are downloaded from S3 on container startup
-- Downloaded once per container lifecycle
-- Cached in memory for fast predictions
+Deployed on AWS ECS (Fargate)
 
-### IAM Permissions
+Models pulled from S3 at container startup
 
-The ECS task role (`ecsTaskExecutionRole`) has been configured with the following S3 permissions:
+Public API served on port 8000
 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::online-course-models",
-                "arn:aws:s3:::online-course-models/*"
-            ]
-        }
-    ]
-}
-```
+Architecture Overview
+Developer → GitHub → ECR → ECS (Fargate)
+                         ↓
+                        S3 (Models)
+                         ↓
+                    Public FastAPI API
 
----
-
-## Deployment on AWS ECS (Fargate)
-
-This project has been containerized using Docker and deployed to **AWS Elastic Container Service (ECS)** using **Fargate** for serverless compute.
-
-### Deployment Steps:
-
-1. **Dockerize the Application**
-   - Created a `Dockerfile` to containerize the FastAPI application
-   - Built the Docker image locally
-   - Tested the container to ensure it runs correctly
-
-2. **Push to Amazon ECR (Elastic Container Registry)**
-   ```
-   # Authenticate Docker to AWS ECR
-   aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 052104148055.dkr.ecr.ap-south-1.amazonaws.com
-   
-   # Tag the image
-   docker tag online-course-completion:latest 052104148055.dkr.ecr.ap-south-1.amazonaws.com/online-course-completion:latest
-   
-   # Push to ECR
-   docker push 052104148055.dkr.ecr.ap-south-1.amazonaws.com/online-course-completion:latest
-   ```
-
-3. **Create S3 Bucket for Models**
-   - Created S3 bucket: `online-course-models`
-   - Uploaded all model files to `s3://online-course-models/models/`
-   - Configured IAM permissions for ECS access
-
-4. **Create ECS Cluster**
-   - Created an ECS cluster named `cool-flamingo-08xrac`
-   - Selected AWS Fargate as the launch type for serverless deployment
-
-5. **Define Task Definition**
-   - Created task definition: `course-completion-task`
-   - Configured container with:
-     - Image URI from ECR
-     - Port mapping: 8000 (container) → 8000 (host)
-     - Memory and CPU allocation
-     - **Environment variables** for S3 configuration
-   - Attached IAM role for S3 access
-
-6. **Create ECS Service**
-   - Service name: `course-completion-service`
-   - Launch type: **FARGATE**
-   - Desired tasks: 1
-   - **Auto-assign Public IP: ENABLED** (critical for public access)
-   - Configured VPC, subnets, and security groups
-
-7. **Configure Security Group**
-   - Opened inbound port **8000** for TCP traffic
-   - Source: `0.0.0.0/0` (Anywhere-IPv4) for public access
-
-### Container Startup Process
-
-When the ECS task starts:
-1. Container pulls Docker image from ECR
-2. Application detects `USE_S3=true`
-3. Downloads all model files from S3 (takes ~5-10 seconds)
-4. Loads models into memory
-5. FastAPI server starts and serves predictions
-
-**Logs confirm S3 integration:**
-```
- USE_S3: True
- Downloading models from S3: s3://online-course-models/models/
-  Downloading features.pkl... ✓
-  Downloading gradient_boosting.pkl... ✓
-  Downloading prep.pkl... ✓
-  Downloading random_forest.pkl... ✓
-  Downloading scaler.pkl... ✓
- Loading model: gradient_boosting.pkl
- Models loaded successfully!
-Uvicorn running on http://0.0.0.0:8000
-```
-
-### Accessing the Deployed API
-
-Once the ECS service is running:
-1. Navigate to ECS → Cluster → Service → Tasks
-2. Click on the running task
-3. Go to the **Networking** tab
-4. Copy the **Public IP** address
-5. Access the API at: `http://<PUBLIC_IP>:8000/docs`
-
-**Note:** The public IP changes each time you restart the service.
-
-### Managing the Service
-
-**To Stop the Service (to avoid charges):**
-- Update service → Set Desired tasks to `0`
-
-**To Restart the Service:**
-- Update service → Set Desired tasks to `1`
-- Wait for task to be in "RUNNING" state
-- Models will be downloaded from S3 automatically
-- Get the new public IP from the task's networking details
-
----
-
-## Architecture Overview
-
-```
-┌─────────────────────────────────────────────┐
-│  Developer (VS Code)                        │
-│  - Write code                               │
-│  - Run tests (pytest)                       │
-│  - Build Docker image                       │
-└──────────────┬──────────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────────┐
-│  GitHub Repository                          │
-│  - Source code                              │
-│  - Dockerfile                               │
-│  - Unit tests                               │
-└──────────────┬──────────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────────┐
-│  AWS ECR (Docker Registry)                  │
-│  - Stores Docker images                     │
-└──────────────┬──────────────────────────────┘
-               │
-               ▼
-┌─────────────────────────────────────────────┐
-│  AWS ECS (Fargate)                          │
-│  - Pulls Docker image from ECR              │
-│  - Downloads models from S3 on startup      │
-│  - Runs FastAPI container                   │
-└──────────────┬──────────────────────────────┘
-               │
-               ├──────────► AWS S3 Bucket
-               │            (Models: 68 MB)
-               │
-               ▼
-        Public API Endpoint
-        http://<PUBLIC_IP>:8000
-```
-
----
-
-## Technologies & Skills Demonstrated
-
-### Machine Learning & MLOps
-- ✅ Model training with multiple algorithms
-- ✅ Model evaluation and selection
-- ✅ Feature engineering
-- ✅ Model serialization with joblib
-- ✅ Model versioning with S3
-
-### Backend Development
-- ✅ RESTful API with FastAPI
-- ✅ API documentation (Swagger/OpenAPI)
-- ✅ Request validation
-- ✅ Error handling
-
-### Testing & Quality Assurance
-- ✅ Unit testing with pytest
-- ✅ Test fixtures and mocking
-- ✅ Code coverage reporting (92%)
-- ✅ Continuous testing workflow
-
-### Cloud & DevOps
-- ✅ Docker containerization
-- ✅ AWS ECS deployment with Fargate
-- ✅ AWS S3 for model storage
-- ✅ AWS ECR for container registry
-- ✅ AWS IAM for security and permissions
-- ✅ Environment-based configuration
-
-### Best Practices
-- ✅ Separation of concerns (models separate from code)
-- ✅ Environment variables for configuration
-- ✅ Proper error handling
-- ✅ Security (private S3 bucket, IAM roles)
-- ✅ Cost optimization strategies
-- ✅ Comprehensive documentation
-
----
-
-## Contact
-
-**Sahana L**  
-Email: sahanal2024@gmail.com  
-GitHub: [@SahanaCodes7](https://github.com/SahanaCodes7)
-
----
-```
-
-Just copy everything above and replace your README.md file! 🎉
