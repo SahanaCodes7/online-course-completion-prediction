@@ -1,3 +1,4 @@
+
 # Online Course Completion Prediction
 
 This project predicts whether a student will complete an online course using **Machine Learning**.  
@@ -37,25 +38,27 @@ The system also includes a **FastAPI backend** for real-time predictions and sup
 ---
 
 ##  Project Structure
+```
 
 online-course-completion-prediction/
 │── app/
-│ ├── main.py # FastAPI application
-│ ├── inference.py # Loads trained model & runs predictions
-│ └── train_model.py # Training script (model selection)
+│   ├── main.py            # FastAPI application
+│   ├── inference.py       # Loads trained model & runs predictions
+│   └── train_model.py     # Training script (model selection)
 │
-│── models/ # Trained models (local dev only)
-│── tests/ # Pytest unit tests
-│── notebooks/ # Experiments & exploration
-│── data/ # Dataset directory (not committed)
+│── models/                # Trained models (local dev only)
+│── tests/                 # Pytest unit tests
+│── notebooks/             # Experiments & exploration
+│── data/                  # Dataset directory (not committed)
 │
-│── retraining.py # Model retraining script
+│── retraining.py          # Model retraining script
 │── Dockerfile
 │── docker-compose.yml
 │── requirements.txt
 │── pyproject.toml
 │── README.md
 
+```
 
 ---
 
@@ -63,8 +66,11 @@ online-course-completion-prediction/
 - The dataset is **NOT included** in the repository.
 - Place the dataset locally at:
 
+```
+
 data/online_course_completion.csv
 
+````
 
 This design avoids pushing large or sensitive data to GitHub and follows industry best practices.
 
@@ -76,24 +82,189 @@ This design avoids pushing large or sensitive data to GitHub and follows industr
 ```bash
 git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
 cd online-course-completion-prediction
+````
 
 ### 2. Create & activate virtual environment
+<<<<<<< HEAD
 ```bash 
+=======
+
+```bash
+>>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 python -m venv venv
+```
 
-Windows
+**Windows**
+
+```bash
 venv\Scripts\activate
+```
 
-Linux / Mac
+**Linux / Mac**
+
+```bash
 source venv/bin/activate
+```
 
 ### 3. Install dependencies
+<<<<<<< HEAD
+=======
+
+```bash
+>>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 pip install -r requirements.txt
+```
+
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+---
 
+##  Model Training
+
+Train models and automatically select the best one:
+
+```bash
+python app/train_model.py --data data/online_course_completion.csv
+```
+
+This script:
+
+* Preprocesses the data
+* Trains Logistic Regression, Random Forest & Gradient Boosting
+* Selects the best model based on accuracy
+* Saves the model, scaler, and feature metadata in `models/`
+
+---
+
+##  Model Retraining (New Data Support)
+
+A **retraining pipeline** is included to simulate retraining on new incoming data.
+
+```bash
+python retraining.py
+```
+
+What it does:
+
+* Loads the existing dataset (simulating new data)
+* Handles categorical features using one-hot encoding
+* Retrains the model
+* Evaluates accuracy
+* Saves the updated model in `models/`
+
+> 🔹 This script is designed so real updated datasets can be plugged in later without changing the pipeline.
+
+---
+
+##  Testing
+
+Run all tests:
+
+```bash
+pytest tests/ -v
+```
+
+Run with coverage:
+
+```bash
+pytest tests/ -v --cov=app --cov-report=html
+```
+
+* ~24 unit tests
+* ~92% coverage
+* Covers:
+
+  * API endpoints
+  * Inference logic
+  * Error handling
+  * S3 integration (mocked)
+
+---
+
+##  Running the API Locally
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Access:
+
+* Swagger UI → [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* ReDoc → [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+---
+
+##  Example Prediction Request
+
+```json
+{
+  "age": 25,
+  "continent": "Asia",
+  "education_level": "Bachelors",
+  "hours_per_week": 10,
+  "num_logins_last_month": 15,
+  "videos_watched_pct": 80,
+  "assignments_submitted": 5,
+  "discussion_posts": 3,
+  "is_working_professional": 1
+}
+```
+
+Response:
+
+```json
+{
+  "completed_course": 1,
+  "model": "gradient_boosting.pkl"
+}
+```
+
+---
+
+##  Model Storage – AWS S3
+
+In production:
+
+* Models are stored in **AWS S3**
+* Containers download models on startup
+* Keeps Docker images small and flexible
+
+Environment variables:
+
+```bash
+USE_S3=true
+S3_BUCKET=online-course-models
+S3_PREFIX=models
+```
+
+---
+
+##  Deployment (AWS ECS – Fargate)
+
+* Dockerized FastAPI app
+* Image pushed to **Amazon ECR**
+* Deployed on **AWS ECS (Fargate)**
+* Models pulled from S3 at container startup
+* Public API served on port `8000`
+
+---
+
+## Architecture Overview
+
+```
+Developer → GitHub → ECR → ECS (Fargate)
+                         ↓
+                        S3 (Models)
+                         ↓
+                    Public FastAPI API
+```
+
+---
+>>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 
