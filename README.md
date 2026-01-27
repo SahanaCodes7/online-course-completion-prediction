@@ -77,8 +77,22 @@ This design avoids pushing large or sensitive data to GitHub and follows industr
 git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
 cd online-course-completion-prediction
 
-## 2. Create & activate virtual environment
+### 2. Create & activate virtual environment
+```bash 
 python -m venv venv
+
+Windows
+venv\Scripts\activate
+
+Linux / Mac
+source venv/bin/activate
+
+### 3. Install dependencies
+pip install -r requirements.txt
+
+
+
+
 
 
 
