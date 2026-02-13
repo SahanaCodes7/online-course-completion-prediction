@@ -255,8 +255,3 @@ Developer → GitHub → ECR → ECS (Fargate)
 ```
 
 
-## 👩‍💻 Author
-
-**Sahana L**  
-GitHub: https://github.com/SahanaCodes7  
-
