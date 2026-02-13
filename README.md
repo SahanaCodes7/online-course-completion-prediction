@@ -12,7 +12,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-##  Features
+## 🚀 Features
 
 - Data preprocessing with feature engineering (BMI, engagement score)
 - Trains multiple ML models:
@@ -30,7 +30,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-##  Tech Stack
+## 🛠 Tech Stack
 
 - Python 3.10+
 - Pandas, NumPy
@@ -45,7 +45,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-##  Project Structure
+## 📂 Project Structure
 
 ```
 online-course-completion-prediction/
@@ -70,7 +70,7 @@ online-course-completion-prediction/
 
 ---
 
-##  Dataset
+## 📊 Dataset
 
 The dataset is **NOT included** in this repository.
 
@@ -80,20 +80,20 @@ Place it locally at:
 data/online_course_completion.csv
 ```
 
-This follows best practice by avoiding large or sensitive data in GitHub.
+This follows industry best practice by avoiding large or sensitive data in GitHub.
 
 ---
 
 ## ⚙️ Setup Instructions
 
-### 1️. Clone the Repository
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
 cd online-course-completion-prediction
 ```
 
-### 2️. Create Virtual Environment
+### 2️⃣ Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -109,7 +109,7 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3️. Install Dependencies
+### 3️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -117,7 +117,7 @@ pip install -r requirements.txt
 
 ---
 
-##  Model Training
+## 🧠 Model Training
 
 Train and automatically select the best model:
 
@@ -133,7 +133,7 @@ This will:
 
 ---
 
-##  Model Retraining (Local)
+## 🔄 Model Retraining (Local)
 
 ```bash
 python retraining.py
@@ -150,7 +150,7 @@ It:
 
 ---
 
-##  Serverless Retraining (AWS Lambda – Container Based)
+## ☁️ Serverless Retraining (AWS Lambda – Container Based)
 
 A container-based AWS Lambda function is configured to:
 
@@ -161,11 +161,48 @@ A container-based AWS Lambda function is configured to:
 Execution time ≈ 50 seconds  
 Memory used ≈ 700MB  
 
-Demonstrates production-style MLOps retraining.
+This demonstrates production-style MLOps retraining automation.
 
 ---
 
-##  Testing
+## 🚀 Recent Update – Production-Style Serverless Retraining
+
+A fully containerized retraining pipeline was implemented using **AWS Lambda (Container-based deployment)**.
+
+### What Was Achieved
+
+- Dockerized retraining script with full ML dependencies
+- Built Linux-compatible image (linux/amd64)
+- Pushed image to Amazon ECR
+- Deployed container-based Lambda function
+- Configured IAM role for secure S3 access
+- Lambda downloads dataset from S3
+- Retrains model inside serverless environment
+- Uploads updated model back to S3
+- Optimized:
+  - Timeout (3 minutes)
+  - Memory (1024 MB)
+  - Model complexity for faster execution
+
+### Technical Challenges Solved
+
+- Resolved Lambda zip size limitations (migrated to container image)
+- Fixed multi-architecture Docker image compatibility issue
+- Handled S3 key mismatch errors
+- Debugged IAM permission issues
+- Tuned Lambda timeout and memory usage
+- Fixed Python indentation and container redeployment issues
+
+This demonstrates hands-on experience in:
+
+- Serverless ML retraining
+- Container-based Lambda deployments
+- AWS IAM & security configuration
+- Real-world MLOps debugging
+
+---
+
+## 🧪 Testing
 
 Run all tests:
 
@@ -183,7 +220,7 @@ Coverage ≈ 92%
 
 ---
 
-##  Run API Locally
+## 🌐 Run API Locally
 
 ```bash
 uvicorn app.main:app --reload
@@ -195,16 +232,17 @@ Access:
 
 ---
 
-##  Deployment (AWS ECS – Fargate)
+## 🚢 Deployment (AWS ECS – Fargate)
 
 - Dockerized FastAPI app
 - Image pushed to Amazon ECR
 - Deployed on AWS ECS (Fargate)
 - Models pulled from S3 on startup
+- Public API served on port 8000
 
---- 
+---
 
-##  Architecture Overview
+## 🏗 Architecture Overview
 
 ```
 Developer → GitHub → ECR → ECS (Fargate)
@@ -216,6 +254,9 @@ Developer → GitHub → ECR → ECS (Fargate)
                 Lambda (Serverless Retraining)
 ```
 
----
->>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
+
+## 👩‍💻 Author
+
+**Sahana L**  
+GitHub: https://github.com/SahanaCodes7  
 
