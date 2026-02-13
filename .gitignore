@@ -1,3 +1,7 @@
-data/*.csv
+data/*.csv 
 venv/
+data/
+models/
+.coverage
+lambda_package/
 __pycache__/
