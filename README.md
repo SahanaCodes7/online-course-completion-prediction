@@ -1,29 +1,37 @@
-
 # Online Course Completion Prediction
 
 This project predicts whether a student will complete an online course using **Machine Learning**.  
 It leverages student engagement data (logins, videos watched, assignments submitted, etc.) and trains multiple ML models to select the best-performing one.
 
-The system also includes a **FastAPI backend** for real-time predictions and supports **model retraining**, making it suitable for production and MLOps workflows.
+The system includes:
+- A FastAPI backend for real-time predictions
+- A retraining pipeline
+- AWS integration (S3, ECR, ECS, Lambda container retraining)
+
+This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
 ##  Features
-- Data preprocessing with **feature engineering** (BMI, engagement score)
-- Trains multiple models:
+
+- Data preprocessing with feature engineering (BMI, engagement score)
+- Trains multiple ML models:
   - Logistic Regression
   - Random Forest
   - Gradient Boosting
-- Automatically selects and saves the **best model**
-- **Model retraining script** to handle new incoming data
-- **FastAPI backend** with `/predict` endpoint
-- **Comprehensive unit tests** using pytest (~92% coverage)
-- **AWS S3 integration** for model storage (production)
-- Dockerized and deployable on **AWS ECS (Fargate)**
+- Automatically selects and saves the best model
+- Model retraining pipeline (supports new incoming data)
+- FastAPI backend with `/predict` endpoint
+- Comprehensive unit tests (~92% coverage)
+- AWS S3 integration for model storage
+- Dockerized application
+- Deployable on AWS ECS (Fargate)
+- Serverless retraining using AWS Lambda (container-based)
 
 ---
 
 ##  Tech Stack
+
 - Python 3.10+
 - Pandas, NumPy
 - Scikit-learn
@@ -33,132 +41,127 @@ The system also includes a **FastAPI backend** for real-time predictions and sup
 - Boto3 (AWS SDK)
 - Pytest
 - Docker
-- AWS (S3, ECR, ECS – Fargate)
+- AWS (S3, ECR, ECS – Fargate, Lambda)
 
 ---
 
 ##  Project Structure
-```
 
+```
 online-course-completion-prediction/
 │── app/
 │   ├── main.py            # FastAPI application
-│   ├── inference.py       # Loads trained model & runs predictions
-│   └── train_model.py     # Training script (model selection)
+│   ├── inference.py       # Model loading & prediction logic
+│   └── train_model.py     # Model training & selection
 │
-│── models/                # Trained models (local dev only)
-│── tests/                 # Pytest unit tests
-│── notebooks/             # Experiments & exploration
-│── data/                  # Dataset directory (not committed)
+│── models/                # Local trained models (not production)
+│── tests/                 # Unit tests (pytest)
+│── notebooks/             # Experimentation
+│── data/                  # Dataset (not committed)
 │
-│── retraining.py          # Model retraining script
+│── retraining.py          # Local retraining script
+│── lambda_container/      # Container-based Lambda retraining setup
 │── Dockerfile
 │── docker-compose.yml
 │── requirements.txt
 │── pyproject.toml
 │── README.md
-
 ```
 
 ---
 
 ##  Dataset
-- The dataset is **NOT included** in the repository.
-- Place the dataset locally at:
+
+The dataset is **NOT included** in this repository.
+
+Place it locally at:
 
 ```
-
 data/online_course_completion.csv
+```
 
-````
-
-This design avoids pushing large or sensitive data to GitHub and follows industry best practices.
+This follows best practice by avoiding large or sensitive data in GitHub.
 
 ---
 
-##  Setup Instructions
+## ⚙️ Setup Instructions
 
-### 1. Clone the repository
+### 1️. Clone the Repository
+
 ```bash
 git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
 cd online-course-completion-prediction
-````
+```
 
-### 2. Create & activate virtual environment
-<<<<<<< HEAD
-```bash 
-=======
+### 2️. Create Virtual Environment
 
 ```bash
->>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 python -m venv venv
 ```
 
 **Windows**
-
 ```bash
 venv\Scripts\activate
 ```
 
 **Linux / Mac**
-
 ```bash
 source venv/bin/activate
 ```
 
-### 3. Install dependencies
-<<<<<<< HEAD
-=======
+### 3️. Install Dependencies
 
 ```bash
->>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 pip install -r requirements.txt
 ```
 
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
 ---
 
 ##  Model Training
 
-Train models and automatically select the best one:
+Train and automatically select the best model:
 
 ```bash
 python app/train_model.py --data data/online_course_completion.csv
 ```
 
-This script:
-
-* Preprocesses the data
-* Trains Logistic Regression, Random Forest & Gradient Boosting
-* Selects the best model based on accuracy
-* Saves the model, scaler, and feature metadata in `models/`
+This will:
+- Preprocess data
+- Train multiple models
+- Select best based on accuracy
+- Save model + scaler in `models/`
 
 ---
 
-##  Model Retraining (New Data Support)
-
-A **retraining pipeline** is included to simulate retraining on new incoming data.
+##  Model Retraining (Local)
 
 ```bash
 python retraining.py
 ```
 
-What it does:
+This simulates retraining using updated data.
 
-* Loads the existing dataset (simulating new data)
-* Handles categorical features using one-hot encoding
-* Retrains the model
-* Evaluates accuracy
-* Saves the updated model in `models/`
+It:
+- Loads dataset
+- Encodes categorical features
+- Retrains model
+- Evaluates accuracy
+- Saves updated model
 
-> 🔹 This script is designed so real updated datasets can be plugged in later without changing the pipeline.
+---
+
+##  Serverless Retraining (AWS Lambda – Container Based)
+
+A container-based AWS Lambda function is configured to:
+
+1. Download dataset from S3
+2. Retrain the model
+3. Upload updated model back to S3
+
+Execution time ≈ 50 seconds  
+Memory used ≈ 700MB  
+
+Demonstrates production-style MLOps retraining.
 
 ---
 
@@ -176,86 +179,32 @@ Run with coverage:
 pytest tests/ -v --cov=app --cov-report=html
 ```
 
-* ~24 unit tests
-* ~92% coverage
-* Covers:
-
-  * API endpoints
-  * Inference logic
-  * Error handling
-  * S3 integration (mocked)
+Coverage ≈ 92%
 
 ---
 
-##  Running the API Locally
+##  Run API Locally
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
 Access:
-
-* Swagger UI → [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-* ReDoc → [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-
----
-
-##  Example Prediction Request
-
-```json
-{
-  "age": 25,
-  "continent": "Asia",
-  "education_level": "Bachelors",
-  "hours_per_week": 10,
-  "num_logins_last_month": 15,
-  "videos_watched_pct": 80,
-  "assignments_submitted": 5,
-  "discussion_posts": 3,
-  "is_working_professional": 1
-}
-```
-
-Response:
-
-```json
-{
-  "completed_course": 1,
-  "model": "gradient_boosting.pkl"
-}
-```
-
----
-
-##  Model Storage – AWS S3
-
-In production:
-
-* Models are stored in **AWS S3**
-* Containers download models on startup
-* Keeps Docker images small and flexible
-
-Environment variables:
-
-```bash
-USE_S3=true
-S3_BUCKET=online-course-models
-S3_PREFIX=models
-```
+- Swagger → http://127.0.0.1:8000/docs
+- ReDoc → http://127.0.0.1:8000/redoc
 
 ---
 
 ##  Deployment (AWS ECS – Fargate)
 
-* Dockerized FastAPI app
-* Image pushed to **Amazon ECR**
-* Deployed on **AWS ECS (Fargate)**
-* Models pulled from S3 at container startup
-* Public API served on port `8000`
+- Dockerized FastAPI app
+- Image pushed to Amazon ECR
+- Deployed on AWS ECS (Fargate)
+- Models pulled from S3 on startup
 
----
+--- 
 
-## Architecture Overview
+##  Architecture Overview
 
 ```
 Developer → GitHub → ECR → ECS (Fargate)
@@ -263,7 +212,10 @@ Developer → GitHub → ECR → ECS (Fargate)
                         S3 (Models)
                          ↓
                     Public FastAPI API
+                         ↓
+                Lambda (Serverless Retraining)
 ```
 
-
+---
+>>>>>>> 24229b9 (Add model retraining pipeline and ignore dataset files)
 
