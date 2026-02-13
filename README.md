@@ -12,7 +12,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Data preprocessing with feature engineering (BMI, engagement score)
 - Trains multiple ML models:
@@ -30,7 +30,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - Python 3.10+
 - Pandas, NumPy
@@ -45,7 +45,7 @@ This project demonstrates **end-to-end ML + MLOps deployment on AWS**.
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 online-course-completion-prediction/
@@ -70,7 +70,7 @@ online-course-completion-prediction/
 
 ---
 
-## 📊 Dataset
+##  Dataset
 
 The dataset is **NOT included** in this repository.
 
@@ -84,16 +84,16 @@ This follows industry best practice by avoiding large or sensitive data in GitHu
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
-### 1️⃣ Clone the Repository
+### 1️. Clone the Repository
 
 ```bash
 git clone https://github.com/SahanaCodes7/online-course-completion-prediction.git
 cd online-course-completion-prediction
 ```
 
-### 2️⃣ Create Virtual Environment
+### 2️. Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -109,7 +109,7 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3️⃣ Install Dependencies
+### 3️. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -117,7 +117,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🧠 Model Training
+##  Model Training
 
 Train and automatically select the best model:
 
@@ -133,7 +133,7 @@ This will:
 
 ---
 
-## 🔄 Model Retraining (Local)
+##  Model Retraining (Local)
 
 ```bash
 python retraining.py
@@ -150,7 +150,7 @@ It:
 
 ---
 
-## ☁️ Serverless Retraining (AWS Lambda – Container Based)
+##  Serverless Retraining (AWS Lambda – Container Based)
 
 A container-based AWS Lambda function is configured to:
 
@@ -165,7 +165,7 @@ This demonstrates production-style MLOps retraining automation.
 
 ---
 
-## 🚀 Recent Update – Production-Style Serverless Retraining
+##  Recent Update – Production-Style Serverless Retraining
 
 A fully containerized retraining pipeline was implemented using **AWS Lambda (Container-based deployment)**.
 
@@ -202,7 +202,7 @@ This demonstrates hands-on experience in:
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 Run all tests:
 
@@ -220,7 +220,7 @@ Coverage ≈ 92%
 
 ---
 
-## 🌐 Run API Locally
+##  Run API Locally
 
 ```bash
 uvicorn app.main:app --reload
@@ -232,7 +232,7 @@ Access:
 
 ---
 
-## 🚢 Deployment (AWS ECS – Fargate)
+##  Deployment (AWS ECS – Fargate)
 
 - Dockerized FastAPI app
 - Image pushed to Amazon ECR
@@ -242,7 +242,7 @@ Access:
 
 ---
 
-## 🏗 Architecture Overview
+##  Architecture Overview
 
 ```
 Developer → GitHub → ECR → ECS (Fargate)
